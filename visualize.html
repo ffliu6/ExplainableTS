@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Annotation Test Page</title>
+    <style>
+    .header {
+        list-style-type: none;
+        margin: 0;
+        padding: 20px;
+        overflow: hidden;
+        border: 1px solid #e7e7e7;
+        background-color: #f3f3f3;
+    }
+    .texts{
+        width:80%;
+        margin: 0 auto;
+        overflow: hidden;
+    }
+    .columns {
+        width:80%;
+        margin: 0 auto;
+        overflow: hidden;
+    }
+    .footer {
+        width:80%;
+        margin: 0 auto;
+        overflow: hidden;
+    }
+    #left {
+        width:50%;
+
+        height:100%;
+        float: left;
+    }
+    #right {
+        width:50%;
+
+        height:100%;
+        float: left;
+    }
+    .anns {
+        text-align: center;
+        width: 100%;
+        font-size: 20px;
+    }
+    table{
+        border: 1px solid;
+        margin: auto;
+        width: 100%;
+        font-size: 20px;
+    }
+    td{
+        text-align: left;
+        border: 1px solid;
+        font-size: 16px;
+    }
+    th{
+        text-align: center;
+        border: 1px solid;
+        font-size: 16px;
+    }
+    </style>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+    <div class="header">
+        <ul>
+            <h1 align="center"><strong><em>欢迎参与到本次文本简化的标注工作！</em></strong></h1>
+            <h3 align="center">非常感谢您的标注工作，您上传的所有结果将被用于学术研究。</h3>
+        </ul>
+        <div class="texts">
+            <h3 align="left">项目介绍</h3>
+            <p style="text-align:justify; font-size:18px; text-indent: 2em;">
+                <strong>文本简化（Text simplification）</strong>，通常被认为是在保留原有文本语境信息不变的情况下，降低文本语言复杂度的过程。其简化的方法大致分为删减不需要的句子，将复杂词汇替换为简单词汇，以及为内容添加解释。<u>本研究人工标注将聚焦为内容添加解释</u>。
+            </p>
+            <h3 align="left">标注指引</h3>
+            <p style="text-align:justify; font-size:18px; text-indent: 2em;">
+                在每个标注页面，您将看到原始文本与简化后文本的比对，其中简化后的文本中会有些句子被高亮出来。您需要在完整阅读完原始文本与简化后文本之后，判断简化后文本中高亮的句子，是否为内容的补充解释，同时将判断结果填写到页面下方的<strong>标注结果</strong>表格中。<br>
+                <br>
+                <u>如果决定<strong>是</strong>的话，请进行如下操作：</u><br>
+                <ol style="text-align: justify; font-size: 18px;">
+                    <li>
+                        判定高亮的句子在多大程度上依赖其附近的句子，换句话说，如果将该句拿出上下文语境，是否意思保持不变？<br>
+                        请进行1-3分的整数评分（1、2、3分），其中1分代表最不依赖，例如对引入概念的阐述（e.g., An artery is a tube that transports blood.），3分代表最依赖，例如对上文信息的分析（e.g., Switching between schools makes it more difficult to learn.）。
+                    </li>
+                    <li>请提供您觉得该高亮句子所解释的相应文本内容。</li>
+                    <li>请对您给出的整数评分进行理由阐述。</li>
+                </ol>
+            </p>
+            <p style="text-align:justify; font-size:18px;">
+                <u>如果决定<strong>否</strong>的话，请进行如下操作：</u><br>
+                <ol style="text-align: justify; font-size: 18px;">
+                    <li>请提供原始文本中包含该内容的句子或段落文本。</li>
+                    <li>请对您提供的包含文本进行解释。</li>
+                </ol>
+            </p>
+            <p style="text-align:justify; font-size:18px;"><u>如果您<strong>无法决定</strong>高亮句子是否为内容解释，请解释原因。</u></p>
+        </div>
+    </div>
+
+
+
+    <div class="columns" style="column-gap: 2em;">
+        <aside id="left">
+            <h3 id="levels" align="center">原始文本</h3>
+            
+            <div class="box1">
+                {% for para in origin_file_paras %}
+                    {{ para }}<br><br>
+                {% endfor %}
+                <br>
+            </div>
+        </aside>
+        <section id="right">
+            <h3 id="levels" align="center">简化文本</h3>
+            
+            <div class="box1">
+                {% autoescape off %}
+                    {{ adapted_text4web }}
+                {% endautoescape %}
+            </div>
+        </section>
+    </div>
+
+    <div class="footer">
+        <h3 id="raw_text" align="center">文本简化人工标注</h3>
+            <p id="state" style="font-size: 160%">该页面标注完成状态：未提交</p>
+            
+            <!--已标注句子表格变量声明-->
+            <table>
+                <!-- 表格标题 -->
+                <caption>表1 该页面文本简化人工标注结果</caption>
+                <!-- 表格第一行：表格表头 -->
+                <tr>
+                    <th>编号</th>
+                    <th>句子</th>
+                    <th>判断</th>
+                    <th>评分</th>
+                    <th>文本内容</th>
+                    <th>理由</th>
+                </tr>
+                {% for sent in sents %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ sent }}</td>
+                        <td>
+                            <select name="judge">
+                                <option value="judge_yes">是</option>
+                                <option value="judge_no">否</option>
+                                <option value="judge_unknown">无法</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select name="score">
+                                <option value="score_0">0</option>
+                                <option value="score_1">1</option>
+                                <option value="score_2">2</option>
+                                <option value="score_3">3</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" id="content">
+                        </td>
+                        <td>
+                            <input type="text" id="reasons">
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+        <input type="button" value="SUBMIT" id="submit" style="display:block;margin:0 auto;width:150px;height:60px;border:2px;font-size:28px">
+    </div>
+    
+
+    <!--添加与删除表格内容-->
+    <script>
+        // 1. 声明全局变量传字典
+        var sendinfo = [];
+        
+        // 2. 获取动态表格变量
+        var table = document.getElementsByTagName("table")[0];
+        var _trLength = table.getElementsByTagName("tr").length;
+        var _obj = {};
+
+        var _tableToJSON = function(index){
+            var trObject = table.getElementsByTagName("tr")[index];
+            //var _td = _tr.getElementsByTagName("td");
+            var tdArr = trObject.children;
+            var id = tdArr[0].innerHTML;
+            var sent = tdArr[1].innerHTML;
+            var judge = tdArr[2].childNodes[1];
+            var judge_text = judge.options[judge.selectedIndex].text;
+            var score = tdArr[3].childNodes[1];
+            var score_text = score.options[score.selectedIndex].text;
+            var content = tdArr[4].childNodes[1].value;
+            var reason = tdArr[5].childNodes[1].value;
+
+            _obj = {
+                'id': id,
+                'sent': sent,
+                'judge': judge_text,
+                'score': score_text,
+                'content': content,
+                'reason': reason
+            };
+            sendinfo.push(_obj);
+        };
+        // console.log(sendinfo);
+
+        // 3. 提交内容给后端
+        var submit = document.getElementById("submit");
+        submit.onclick = function(){
+            var txt;
+            if (confirm("提交后将不能再进行修改，您是否确认提交呢？")) {
+                txt = "已提交"
+                for (var i=1; i < _trLength; i++){
+                    _tableToJSON(i);
+                }
+                var postinfo = {
+                    path: '{{ path }}',
+                    postinfo: JSON.stringify(sendinfo)
+                };
+                // console.log(postinfo);
+                $.post('/save', postinfo, function(result){
+                    console.log(result.yes);
+                });
+            } else {
+                txt = "未提交"
+            }
+            document.getElementById("state").innerHTML = "该页面标注完成状态：" + txt;
+        }
+    </script>
+</body>
+</html>
