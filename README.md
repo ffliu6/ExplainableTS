@@ -26,3 +26,7 @@ python code/main.py \
     # --saved_path ./trained_models/cae/
 ```
 LS and ES tasks finetuned the models *bart-base* and *gpt2* released by [Huggingface](https://huggingface.co/).
+
+
+## Data
+*meta.xlsx* contains the meta information of the 315 authentic reading assessment texts.
